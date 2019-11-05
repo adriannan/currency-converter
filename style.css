@@ -1,0 +1,68 @@
+main {
+  max-width: 80%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+main h1 {
+  font-weight: normal;
+  letter-spacing: 1px;
+  margin: 1em;
+  /* font-family: Georgia, "Times New Roman", Times, serif; */
+  /* font-family: Verdana, Geneva, Tahoma, sans-serif; */
+}
+
+select {
+  width: 10rem;
+  height: 2rem;
+  margin: 1rem 0.5em;
+  font-size: 1em;
+  background-color: #fff;
+}
+/* select:focus {
+  outline: px auto #133989;
+} */
+select:focus,
+input:focus {
+  outline: none;
+  box-shadow: inset 0px 0px 3px #133989;
+}
+input {
+  width: 16rem;
+  height: 2rem;
+  margin: 1rem 0.5em;
+  border-radius: 5px;
+  text-align: right;
+  font-size: 1em;
+}
+input:focus {
+  /* outline: 5px auto #133989; */
+  /* opacity: 0.6; */
+}
+
+section {
+  width: 80%;
+  max-width: 28rem;
+  margin: 2em 1em;
+  display: flex;
+  justify-content: space-between;
+}
+
+button {
+  width: 8rem;
+  height: 2rem;
+  font-size: 0.8em;
+  border-radius: 5px;
+  align-self: center;
+  border: none;
+  background-color: #133989;
+  color: #fff;
+  outline: none;
+}
+button:active {
+  transform: scale(0.98);
+  opacity: 0.9;
+}
