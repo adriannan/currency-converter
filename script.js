@@ -60,6 +60,10 @@ amountFrom.addEventListener("input", () => {
 
   let select = currencyPairs.filter(pair => pair.symbol == symbol);
   amountTo.value = (event.target.value * select[0].ratio).toFixed(2);
+
+  document.querySelector(
+    "#ratio"
+  ).innerHTML = `${amountFrom.value} ${currencyFrom} = ${amountTo.value} ${currencyTo}`;
 });
 
 amountTo.addEventListener("input", () => {
@@ -75,6 +79,10 @@ amountTo.addEventListener("input", () => {
 
   let select = currencyPairs.filter(pair => pair.symbol == symbol);
   amountFrom.value = (event.target.value * select[0].ratio).toFixed(2);
+
+  document.querySelector(
+    "#ratio"
+  ).innerHTML = `${amountFrom.value} ${currencyFrom} = ${amountTo.value} ${currencyTo}`;
 });
 
 document.querySelector("#currencyFrom").addEventListener("change", () => {
@@ -102,10 +110,12 @@ const setRatio = () => {
   document.querySelector("#ratioSec").innerHTML = `1 ${currencyTo} = ${(
     1 / select[0].ratio
   ).toFixed(3)} ${currencyFrom}`;
+  document.querySelector("#ratio").innerHTML = "";
 };
 setRatio();
 
 btnClear.addEventListener("click", () => {
   amountFrom.value = "";
   amountTo.value = "";
+  setRatio();
 });

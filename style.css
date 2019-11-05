@@ -16,41 +16,42 @@ main h1 {
 }
 
 select {
-  width: 10rem;
+  width: 9rem;
   height: 2rem;
   margin: 1rem 0.5em;
   font-size: 1em;
   background-color: #fff;
 }
-/* select:focus {
-  outline: px auto #133989;
-} */
+
 select:focus,
 input:focus {
   outline: none;
   box-shadow: inset 0px 0px 3px #133989;
 }
 input {
-  width: 16rem;
+  width: 17rem;
   height: 2rem;
   margin: 1rem 0.5em;
   border-radius: 5px;
   text-align: right;
   font-size: 1em;
 }
-input:focus {
-  /* outline: 5px auto #133989; */
-  /* opacity: 0.6; */
-}
 
 section {
   width: 80%;
   max-width: 28rem;
-  margin: 2em 1em;
+  margin: 1em;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
 }
-
+section h2 {
+  width: 100%;
+  height: 1.2em;
+  text-align: center;
+  font-weight: normal;
+  margin: 1.5em;
+}
 button {
   width: 8rem;
   height: 2rem;
