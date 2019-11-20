@@ -14,7 +14,7 @@ fetch("https://api.ratesapi.io/api/latest?base=PLN")
   .then(response => response.json())
   .then(response => {
     currentRate = response.rates;
-    setRatio();
+    setRatio(response.date);
   });
 
 let invalidChars = ["-", "+", "e"];
@@ -51,15 +51,16 @@ amountTo.addEventListener("input", () => {
   calcRatio(currencyFrom, currencyTo, event.target.value, amountFromCalc);
 });
 
-document.querySelector("#currencyFrom").addEventListener("change", () => {
+const reset = () => {
   amountTo.value = "";
   amountFrom.value = "";
   setRatio();
+};
+document.querySelector("#currencyFrom").addEventListener("change", () => {
+  reset();
 });
 document.querySelector("#currencyTo").addEventListener("change", () => {
-  amountTo.value = "";
-  amountFrom.value = "";
-  setRatio();
+  reset();
 });
 
 const calcRatio = (curFrom, curTo, amountCalc, amount) => {
@@ -74,7 +75,7 @@ btnClear.addEventListener("click", () => {
   setRatio();
 });
 
-const setRatio = () => {
+const setRatio = date => {
   const currencyFrom = document.querySelector("#currencyFrom").value;
   const currencyTo = document.querySelector("#currencyTo").value;
 
@@ -85,4 +86,5 @@ const setRatio = () => {
     currentRate[currencyFrom] / currentRate[currencyTo]
   ).toFixed(3)} ${currencyFrom}`;
   document.querySelector("#ratio").innerHTML = "";
+  document.querySelector("#update").innerHTML = `Last update: ${date}`;
 };

@@ -52,6 +52,9 @@ section h2 {
   font-weight: normal;
   margin: 1.5em;
 }
+#update {
+  font-size: 0.8em;
+}
 button {
   width: 8rem;
   height: 2rem;
@@ -68,7 +71,7 @@ button:active {
   opacity: 0.9;
 }
 
-@media screen and (max-width: 988px) {
+@media screen and (max-width: 768px) {
   main {
     max-width: 95%;
   }
