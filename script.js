@@ -1,50 +1,22 @@
-// alert("ok");
-// const currencyFrom = document.querySelector("#currencyFrom");
-// const currencyTo = document.querySelector("#currencyTo");
-
 const btnClear = document.querySelector("#clear");
 
 let amountFrom = document.querySelector("#amountFrom");
 let amountTo = document.querySelector("#amountTo");
 
-const currencyPairs = [
-  {
-    symbol: "PLNEUR",
-    ratio: 0.234
-  },
-  {
-    symbol: "PLNUSD",
-    ratio: 0.261
-  },
-  {
-    symbol: "EURPLN",
-    ratio: 4.269
-  },
-  {
-    symbol: "EURUSD",
-    ratio: 1.113
-  },
-  {
-    symbol: "USDPLN",
-    ratio: 3.835
-  },
-  {
-    symbol: "USDEUR",
-    ratio: 0.898
-  },
-  {
-    symbol: "PLNPLN",
-    ratio: 1
-  },
-  {
-    symbol: "USDUSD",
-    ratio: 1
-  },
-  {
-    symbol: "EUREUR",
-    ratio: 1
-  }
-];
+let currentRate = {};
+
+fetch("https://api.ratesapi.io/api/latest?base=PLN")
+  .then(response => {
+    if (response.ok) {
+      return response;
+    }
+  })
+  .then(response => response.json())
+  .then(response => {
+    currentRate = response.rates;
+    setRatio();
+  });
+
 let invalidChars = ["-", "+", "e"];
 
 amountFrom.addEventListener("input", () => {
@@ -55,15 +27,12 @@ amountFrom.addEventListener("input", () => {
   });
   const currencyFrom = document.querySelector("#currencyFrom").value;
   const currencyTo = document.querySelector("#currencyTo").value;
-
-  let symbol = currencyFrom + currencyTo;
-
-  let select = currencyPairs.filter(pair => pair.symbol == symbol);
-  amountTo.value = (event.target.value * select[0].ratio).toFixed(2);
-
-  document.querySelector(
-    "#ratio"
-  ).innerHTML = `${amountFrom.value} ${currencyFrom} = ${amountTo.value} ${currencyTo}`;
+  const amountToCalc = (
+    (currentRate[currencyTo] / currentRate[currencyFrom]) *
+    event.target.value
+  ).toFixed(2);
+  amountTo.value = amountToCalc;
+  calcRatio(currencyFrom, currencyTo, amountToCalc, event.target.value);
 });
 
 amountTo.addEventListener("input", () => {
@@ -74,15 +43,12 @@ amountTo.addEventListener("input", () => {
   });
   const currencyFrom = document.querySelector("#currencyFrom").value;
   const currencyTo = document.querySelector("#currencyTo").value;
-
-  let symbol = currencyTo + currencyFrom;
-
-  let select = currencyPairs.filter(pair => pair.symbol == symbol);
-  amountFrom.value = (event.target.value * select[0].ratio).toFixed(2);
-
-  document.querySelector(
-    "#ratio"
-  ).innerHTML = `${amountFrom.value} ${currencyFrom} = ${amountTo.value} ${currencyTo}`;
+  const amountFromCalc = (
+    (currentRate[currencyFrom] / currentRate[currencyTo]) *
+    event.target.value
+  ).toFixed(2);
+  amountFrom.value = amountFromCalc;
+  calcRatio(currencyFrom, currencyTo, event.target.value, amountFromCalc);
 });
 
 document.querySelector("#currencyFrom").addEventListener("change", () => {
@@ -96,26 +62,27 @@ document.querySelector("#currencyTo").addEventListener("change", () => {
   setRatio();
 });
 
-const setRatio = () => {
-  const currencyFrom = document.querySelector("#currencyFrom").value;
-  const currencyTo = document.querySelector("#currencyTo").value;
-
-  let symbol = currencyFrom + currencyTo;
-
-  let select = currencyPairs.filter(pair => pair.symbol == symbol);
-
+const calcRatio = (curFrom, curTo, amountCalc, amount) => {
   document.querySelector(
-    "#ratioFirst"
-  ).innerHTML = `1 ${currencyFrom} = ${select[0].ratio} ${currencyTo}`;
-  document.querySelector("#ratioSec").innerHTML = `1 ${currencyTo} = ${(
-    1 / select[0].ratio
-  ).toFixed(3)} ${currencyFrom}`;
-  document.querySelector("#ratio").innerHTML = "";
+    "#ratio"
+  ).innerHTML = `${amount} ${curFrom} = ${amountCalc} ${curTo}`;
 };
-setRatio();
 
 btnClear.addEventListener("click", () => {
   amountFrom.value = "";
   amountTo.value = "";
   setRatio();
 });
+
+const setRatio = () => {
+  const currencyFrom = document.querySelector("#currencyFrom").value;
+  const currencyTo = document.querySelector("#currencyTo").value;
+
+  document.querySelector("#ratioFirst").innerHTML = `1 ${currencyFrom} = ${(
+    currentRate[currencyTo] / currentRate[currencyFrom]
+  ).toFixed(3)} ${currencyTo}`;
+  document.querySelector("#ratioSec").innerHTML = `1 ${currencyTo} = ${(
+    currentRate[currencyFrom] / currentRate[currencyTo]
+  ).toFixed(3)} ${currencyFrom}`;
+  document.querySelector("#ratio").innerHTML = "";
+};
