@@ -4,6 +4,7 @@ let amountFrom = document.querySelector("#amountFrom");
 let amountTo = document.querySelector("#amountTo");
 
 let currentRate = {};
+let currentDate;
 
 fetch("https://api.ratesapi.io/api/latest?base=PLN")
   .then(response => {
@@ -14,7 +15,8 @@ fetch("https://api.ratesapi.io/api/latest?base=PLN")
   .then(response => response.json())
   .then(response => {
     currentRate = response.rates;
-    setRatio(response.date);
+    currentDate = response.date;
+    setRatio();
   });
 
 let invalidChars = ["-", "+", "e"];
@@ -86,5 +88,5 @@ const setRatio = date => {
     currentRate[currencyFrom] / currentRate[currencyTo]
   ).toFixed(3)} ${currencyFrom}`;
   document.querySelector("#ratio").innerHTML = "";
-  document.querySelector("#update").innerHTML = `Last update: ${date}`;
+  document.querySelector("#update").innerHTML = `Last update: ${currentDate}`;
 };
